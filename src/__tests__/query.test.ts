@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client/core";
 import { get } from "svelte/store";
-import { getClient, query, setClient } from "..";
+import { query } from "..";
 import { Result } from "../observable";
 import { restoring } from "../restore";
 import { getMock, MockClient, mockObservableQuery } from "../__fixtures__/mock";
@@ -21,15 +21,14 @@ it("should export query", () => {
 });
 
 it("should call watchQuery with options", async () => {
-	setClient({ mutate: () => Promise.resolve(42) } as MockClient);
+	const client = { mutate: () => Promise.resolve(42) } as MockClient
 
-	const store = query(MESSAGE_BY_ID, { variables: { id: 1 } });
+	const store = client.query(MESSAGE_BY_ID, { variables: { id: 1 } });
 
 	const values = await read<Result<any>>(store);
 	expect(values[0].loading).toBe(true);
 	expect(values[1].data).toEqual({});
 
-	const client = getClient();
 	const [[options]] = getMock(client.watchQuery).calls;
 
 	expect(options.query).toBeDefined();

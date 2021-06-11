@@ -1,4 +1,4 @@
-export { getClient, setClient } from "./context";
+export { SvelteApolloClient } from "./client";
 export { mutation } from "./mutation";
 export type { ReadableQuery, ReadableResult, Result } from "./observable";
 export { query } from "./query";
